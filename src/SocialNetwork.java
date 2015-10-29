@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 
 public class SocialNetwork {
     
@@ -27,8 +27,7 @@ public class SocialNetwork {
     public void printCurrentUsers(){
         System.out.println("Printing Current Users(" + currentUsers.size() +")......");
         for (User user : currentUsers){
-            System.out.println("Username: " + user.getUsername() + "  Location: " + user.getGeoLocation() 
-                                + "  Account Type: " + user.getAccountType() + "  Blocked: " + user.blocked());
+            user.printUser();
         }
     }
     
@@ -37,6 +36,20 @@ public class SocialNetwork {
         System.out.println("Printing all posts(" + getAllPosts().size() + ").....");
         for ( Post p : getAllPosts()){
             p.printPost();
+        }
+    }
+    
+    public void printPosts(Date date){
+        boolean found = false;
+        System.out.println("All posts from " + date.toString().substring(0, 10) + ":");
+        for (Post p : getAllPosts()){
+            if (p.getSent().toString().substring(0, 10).equals(date.toString().substring(0, 10))){
+                p.printPost();
+                found = true;
+            }
+        }
+        if (!found){
+            System.out.println("No posts on that day!");
         }
     }
     

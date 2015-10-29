@@ -1,8 +1,12 @@
-import java.util.Arrays;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy");
         
         // Social Network
         SocialNetwork bookFace = new SocialNetwork("bookFace");
@@ -23,26 +27,33 @@ public class Main {
         sally.payFee(30);
         lucy.register();
         
-        Post p1 = new Post(ben, "Hi my name is ben, I'm new to Book Face");
+        Text p1 = new Text(ben, "Hi my name is ben, I'm new to Book Face", format.parse("11/10/2015 15:30"));
         ben.createPost(p1);
         
-        Post p2 = new Post(bob, "This is my first post to Book Face!");
+        Text p2 = new Text(bob, "This is my first Text to Book Face!", format.parse("12/10/2015 12:30"));
         bob.createPost(p2);
         
-        Post p3 = new Post(sally, "Yo it's Sally...");
-        sally.createPost(p3);
+        Image i1 = new Image(sally, "Yo it's Sally...", "src/image.png", format.parse("13/10/2015 17:20"));
+        sally.createPost(i1);
+        
+        Video v1 = new Video(bob, "My video", "src/video.mp4", format.parse("14/10/2015 18:15"));
+        
+        Audio a1 = new Audio(ben, "My new song", "src/audio.wav", format.parse("15/10/2015 10:55"));
+        
+        bob.createPost(v1);
+        ben.createPost(a1);
+        
+        Post r1 = new Post(sally, p2, "I dont like your post", format.parse("12/10/2015 14:30"));
+        sally.createPost(r1);
         
         
         
-        Reply r1 = new Reply(sally, p2, "I dont like your post");
-        sally.createReply(r1);
+        Post r2 = new Post(bob, r1, "Thanks!", format.parse("12/10/2015 19:30"));
+        bob.createPost(r2);
         
+        Post r3 = new Post(lucy, p2, "Dont worry I like your post!", format.parse("12/10/2015 15:00"));
         
-        
-        Reply r2 = new Reply(bob, r1, "Thanks!");
-        bob.createReply(r2);
-        
-        
+        lucy.createPost(r3);
         
         // Add Users to Social Network
         bookFace.addUser(ross);
@@ -54,19 +65,11 @@ public class Main {
         bookFace.printCurrentState();
         System.out.println("\n");
         
-        lucy.blockUser(sally);
+        bob.printPosts();
+        
+        System.out.println("\n");
         
         bookFace.printCurrentState();
-
-/*    bookFace.printPosts();
-    System.out.println("\n");
-    
-    sally.removePost(p3);
-    lucy.removePost(p2);
-    
-    
-    
-    bookFace.printPosts();
-*/
+        
         }
 }

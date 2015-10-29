@@ -7,22 +7,41 @@ public class Post {
     private String text;
     private final Date SENT;
     private User sender;
+    private Post replyTo;
+    private boolean reply = false;
     
     
-    public Post(User sender, String text) {
+    public Post(User sender, String text, Date sent) {
         this.setText(text);
-        this.SENT = new Date();
+        this.SENT = sent;
         setCount(getCount() + 1);
         this.ID = getCount();
         this.setSender(sender);
     }
     
-    public String postToString(){
-        return getSender().getUsername() + "'s post, number " +  getID() + ": " + getText() + "  Sent: " + getSent();
+    public Post(User sender,Post replyTo, String text, Date sent){
+        this.setText(text);
+        this.SENT = sent;
+        setCount(getCount() + 1);
+        this.ID = getCount();
+        this.setSender(sender);
+        this.setReplyTo(replyTo);
+        reply = true;
+    }
+    
+    
+    
+    public String toString(){
+        if (this.reply){
+            return getSender().getUsername() + "'s " + getClass().toString().substring(6) + " post: " + getText() + "  Sent: " + getSent()
+            + " \n\t In reply to " + replyTo.toString();
+        } else {
+            return getSender().getUsername() + "'s " + getClass().toString().substring(6) + " post: " + getText() + "  Sent: " + getSent();
+        }
     }
     
     public void printPost(){
-        System.out.println(postToString());
+        System.out.println(toString());
     }
     
     public int getID(){
@@ -57,6 +76,14 @@ public class Post {
 
     private void setSender(User sender) {
         this.sender = sender;
+    }
+
+    public Post getReplyTo() {
+        return replyTo;
+    }
+
+    public void setReplyTo(Post replyTo) {
+        this.replyTo = replyTo;
     }
 
 }

@@ -61,7 +61,7 @@ public class User {
         return blocked;
     }
     
-    protected void blockUser(User u){
+    protected void blockUser(User u, boolean block){
         if (this.accountType != AccountType.ADMIN){
             try {
                 throw new UserPermissionsException("User " + getUsername() + " needs " + AccountType.ADMIN 
@@ -70,8 +70,19 @@ public class User {
                 System.out.println(e);
             }
         } else {
-            u.blocked = true;
+            u.blocked = block;
         }
     }
+    
+    public String toString(){
+        return "Username: " + getUsername() + "  Location: " + getGeoLocation() + "  Account Type: " + getAccountType() 
+                + "  Blocked: " + blocked();
+    }
+    
+    public void printUser(){
+        System.out.println(toString());
+    }
+    
+    
     
 }

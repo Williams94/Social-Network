@@ -24,10 +24,12 @@ public class PremiumUser extends User {
     
     public void createPost(Post p){
         try{
-            if ((accountType == accountType.PREMIUM) || (accountType == accountType.ADMIN) && isPaidFee()){
+            if ((accountType == AccountType.PREMIUM && isPaidFee()) || (accountType == AccountType.ADMIN) && (this.blocked() != true)){
                 getCreatedPosts().add(p);
             } else if(!isPaidFee()){
                 throw new UserPermissionsException("User " + getUsername() + " needs to pay the subscript fee of £" + subscriptionFee);
+            } else if(this.blocked()){
+                throw new UserPermissionsException("User " + getUsername() + " has been blocked by and Administrator");
             } else {
                 throw new UserPermissionsException("User " + getUsername() + " needs " + AccountType.PREMIUM 
                         + " account type, but has " + this.accountType);
@@ -37,33 +39,19 @@ public class PremiumUser extends User {
         }
     }
     
-    @Override
     public void removePost(Post p){
         try{
-            if(isPaidFee() && createdPosts.contains(p)){
+            if(isPaidFee() && createdPosts.contains(p) && (this.blocked() != true)){
                 getCreatedPosts().remove(p);
             } else if(!isPaidFee()){
                 throw new UserPermissionsException("User " + getUsername() + " needs to pay the subscript fee of £" + subscriptionFee);
+            } else if(this.blocked()){
+                throw new UserPermissionsException("User " + getUsername() + " has been blocked by and Administrator");
             } else {
                 throw new UserPermissionsException("User " + getUsername() + " needs to be an " + AccountType.ADMIN 
                         + " ato delete someone elses post, but is only a " + this.accountType + " user.");
             }
             
-        } catch (UserPermissionsException e){
-            System.out.println(e);
-        }
-    }
-    
-    public void createReply(Reply reply){
-        try{
-            if ((accountType == accountType.PREMIUM) || (accountType == accountType.ADMIN)  && isPaidFee()){
-                getCreatedPosts().add(reply);
-            } else if(!isPaidFee()){
-                throw new UserPermissionsException("User " + getUsername() + " needs to pay the subscript fee of £" + subscriptionFee);
-            }else {
-                throw new UserPermissionsException("User " + getUsername() + " needs " + AccountType.PREMIUM 
-                        + " account type, but has " + this.accountType);
-            }
         } catch (UserPermissionsException e){
             System.out.println(e);
         }
