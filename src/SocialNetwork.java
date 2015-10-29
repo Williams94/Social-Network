@@ -4,7 +4,7 @@ import java.util.Arrays;
 public class SocialNetwork {
     
     private String name;
-    private ArrayList<User> currentUsers;
+    private static ArrayList<User> currentUsers;
     
     public SocialNetwork(String name){
         this.setName(name);
@@ -21,8 +21,6 @@ public class SocialNetwork {
         } catch (UserNotRegisteredException e) {
             System.out.println(e);
         }
-        
-        
     }
     
     
@@ -34,19 +32,36 @@ public class SocialNetwork {
         }
     }
     
+    
     public void printPosts(){
-        System.out.println("Printing all posts(" + Post.getCount() + ").....");
-        
-        for (User user : currentUsers){
-            try {
-                user.printPosts();
-            } catch (NullPointerException e){
-                user.printPosts();
-            }
-            
+        System.out.println("Printing all posts(" + getAllPosts().size() + ").....");
+        for ( Post p : getAllPosts()){
+            p.printPost();
         }
+    }
+    
+    public static ArrayList<Post> getAllPosts(){
         
-        
+            ArrayList<Post> allPosts = new ArrayList<Post>();
+            
+            for (User user : currentUsers){
+                try {
+                
+                for ( Post post : user.getPosts()){
+                    allPosts.add(post);
+                }
+                } catch (NullPointerException e){
+            user.printPosts();
+        }
+            }            
+
+        return allPosts;
+    }
+    
+    public void printCurrentState(){
+        printCurrentUsers();
+        System.out.println("\n");
+        printPosts();
     }
     
     /************** Getters and setters *****************/
@@ -58,7 +73,7 @@ public class SocialNetwork {
         this.name = name;
     }
 
-    public ArrayList<User> getCurrentUsers() {
+    public static ArrayList<User> getCurrentUsers() {
         return currentUsers;
     }
 

@@ -8,9 +8,10 @@ public class Reply extends Post {
         this.setRepliedTo(repliedTo);
     }
     
-    public void printReply(){
+    @Override
+    public void printPost(){
         System.out.println(getID() + ": " + getText() + "  Sent: " + getSent() + 
-                " \n\t In reply to " + repliedTo.getPost());
+                " \n\t In reply to " + repliedTo.postToString());
     }
     
     

@@ -3,18 +3,31 @@ import java.util.ArrayList;
 public class PremiumUser extends User {
     
     private static final int subscriptionFee = 30;  
-    private ArrayList<Post> createdPosts;
+    private boolean paidFee;
+    
+    protected ArrayList<Post> createdPosts;
 
     public PremiumUser(String username, double geoLocation) {
         super(username, geoLocation);
         this.accountType = AccountType.PREMIUM;
-        createdPosts = new ArrayList<Post>();
+        this.setPaidFee(false);
+        setCreatedPosts(new ArrayList<Post>());
+    }
+    
+    public void payFee(int amount){
+        if(amount >= subscriptionFee){
+            setPaidFee(true);
+        } else {
+            System.out.println("User " + getUsername() + " needs to pay " + (subscriptionFee-amount) + " more to be a premium member.");
+        }
     }
     
     public void createPost(Post p){
         try{
-            if (accountType == accountType.PREMIUM){
-                createdPosts.add(p);
+            if ((accountType == accountType.PREMIUM) || (accountType == accountType.ADMIN) && isPaidFee()){
+                getCreatedPosts().add(p);
+            } else if(!isPaidFee()){
+                throw new UserPermissionsException("User " + getUsername() + " needs to pay the subscript fee of £" + subscriptionFee);
             } else {
                 throw new UserPermissionsException("User " + getUsername() + " needs " + AccountType.PREMIUM 
                         + " account type, but has " + this.accountType);
@@ -24,14 +37,18 @@ public class PremiumUser extends User {
         }
     }
     
-    public void deletePost(Post p){
+    @Override
+    public void removePost(Post p){
         try{
-            if (getPosts().contains(p)){
-                createdPosts.remove(p);
+            if(isPaidFee() && createdPosts.contains(p)){
+                getCreatedPosts().remove(p);
+            } else if(!isPaidFee()){
+                throw new UserPermissionsException("User " + getUsername() + " needs to pay the subscript fee of £" + subscriptionFee);
             } else {
                 throw new UserPermissionsException("User " + getUsername() + " needs to be an " + AccountType.ADMIN 
                         + " ato delete someone elses post, but is only a " + this.accountType + " user.");
             }
+            
         } catch (UserPermissionsException e){
             System.out.println(e);
         }
@@ -39,9 +56,11 @@ public class PremiumUser extends User {
     
     public void createReply(Reply reply){
         try{
-            if (accountType == accountType.PREMIUM){
-                createdPosts.add(reply);
-            } else {
+            if ((accountType == accountType.PREMIUM) || (accountType == accountType.ADMIN)  && isPaidFee()){
+                getCreatedPosts().add(reply);
+            } else if(!isPaidFee()){
+                throw new UserPermissionsException("User " + getUsername() + " needs to pay the subscript fee of £" + subscriptionFee);
+            }else {
                 throw new UserPermissionsException("User " + getUsername() + " needs " + AccountType.PREMIUM 
                         + " account type, but has " + this.accountType);
             }
@@ -52,24 +71,35 @@ public class PremiumUser extends User {
     
     @Override
     public ArrayList<Post> getPosts(){
-        return createdPosts;
+        return getCreatedPosts();
     }
     
     @Override
     public void printPosts(){
-        if(!createdPosts.isEmpty()){
+        if(!getCreatedPosts().isEmpty()){
             System.out.println("Printing out " + getUsername() + "'s posts.......");
-            for (Post post : createdPosts){
-                if (post instanceof Reply){
-                    ((Reply) post).printReply(); 
-                } else {
+            for (Post post : getCreatedPosts()){
                     post.printPost();                    
-                    
-                }
             }
         } else {
             System.out.println("No posts created yet for " + getUsername());
         }
         
+    }
+
+    private boolean isPaidFee() {
+        return paidFee;
+    }
+
+    private void setPaidFee(boolean paidFee) {
+        this.paidFee = paidFee;
+    }
+
+    public ArrayList<Post> getCreatedPosts() {
+        return createdPosts;
+    }
+
+    public void setCreatedPosts(ArrayList<Post> createdPosts) {
+        this.createdPosts = createdPosts;
     }
 }

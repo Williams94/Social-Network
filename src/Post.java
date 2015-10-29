@@ -17,12 +17,12 @@ public class Post {
         this.setSender(sender);
     }
     
-    public String getPost(){
+    public String postToString(){
         return getSender().getUsername() + "'s post, number " +  getID() + ": " + getText() + "  Sent: " + getSent();
     }
     
     public void printPost(){
-        System.out.println(getPost());
+        System.out.println(postToString());
     }
     
     public int getID(){
@@ -51,7 +51,7 @@ public class Post {
         this.text = text;
     }
 
-    private User getSender() {
+    public User getSender() {
         return sender;
     }
 
