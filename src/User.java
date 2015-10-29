@@ -22,7 +22,11 @@ public class User {
     }
     
    public void printPosts(){
-       System.out.println("No posts to show for " + getUsername() + ", probably because of their account type being " + getAccountType());
+       //System.out.println("No posts to show for " + getUsername() + ", probably because of their account type being " + getAccountType());
+   }
+   
+   public void removePost(Post p){
+       
    }
     
     public void register(){
@@ -57,5 +61,17 @@ public class User {
         return blocked;
     }
     
+    protected void blockUser(User u){
+        if (this.accountType != AccountType.ADMIN){
+            try {
+                throw new UserPermissionsException("User " + getUsername() + " needs " + AccountType.ADMIN 
+                        + " account type, but has " + this.accountType);
+            } catch (UserPermissionsException e) {
+                System.out.println(e);
+            }
+        } else {
+            u.blocked = true;
+        }
+    }
     
 }
