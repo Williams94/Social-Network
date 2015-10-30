@@ -26,7 +26,12 @@ public class User {
    }
    
    public void removePost(Post p){
-       
+       try {
+        throw new UserPermissionsException("User " + getUsername() + " needs to be an " + AccountType.ADMIN 
+                   + " to delete someone elses post, but is only a " + this.accountType + " user.");
+    } catch (UserPermissionsException e) {
+        System.out.println(e);
+    }
    }
     
     public void register(){
@@ -81,6 +86,16 @@ public class User {
     
     public void printUser(){
         System.out.println(toString());
+    }
+
+
+    protected void setFileType(String fileType) {
+        try {
+            throw new UserPermissionsException("User " + getUsername() + " needs " + AccountType.ADMIN 
+                    + " account type, but has " + this.accountType);
+        } catch (UserPermissionsException e) {
+            System.out.println(e);
+        }
     }
     
     
