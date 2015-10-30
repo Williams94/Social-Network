@@ -8,6 +8,10 @@ import java.util.Date;
 
 import javax.swing.JComboBox;
 
+/**
+ * @author rbwilliams
+ *
+ */
 public class Main {
 
    
@@ -25,6 +29,7 @@ public class Main {
         Guest ross = new Guest("ross", 1.2);
         PremiumUser ben = new PremiumUser("ben", 3.1);
         PremiumUser bob = new PremiumUser("bob", 5.0);
+        PremiumUser dave = new PremiumUser("dave", 12.9);
         Administrator sally = new Administrator("sally", 2.3);
         Administrator lucy = new Administrator("lucy",0.9);
         
@@ -33,8 +38,9 @@ public class Main {
         ben.payFee(30);
         bob.register();
         bob.payFee(30);
+        dave.payFee(30);
+        dave.register();
         sally.register();
-        sally.payFee(30);
         lucy.register();
         
         Text p1 = new Text(ben, "Hi my name is ben, I'm new to Book Face", format.parse("11/10/2015 15:30"));
@@ -65,10 +71,17 @@ public class Main {
         
         lucy.createPost(r3);
         
+        Text p3 = new Text(dave, "Book Face is great!", format.parse("16/10/2015 23:05"));
+        Text p6 = new Text(dave, "Not so sure about it now though...", format.parse("17/10/2015 21:15"));
+        
+        dave.createPost(p3);
+        dave.createPost(p6);
+        
         // Add Users to Social Network
         bookFace.addUser(ross);
         bookFace.addUser(ben);
         bookFace.addUser(bob);
+        bookFace.addUser(dave);
         bookFace.addUser(sally);
         bookFace.addUser(lucy);
         

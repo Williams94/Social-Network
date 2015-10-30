@@ -1,5 +1,9 @@
 import java.util.ArrayList;
 
+/**
+ * @author rbwilliams
+ *
+ */
 public class PremiumUser extends User {
     
     private static final int subscriptionFee = 30;  
@@ -7,6 +11,10 @@ public class PremiumUser extends User {
     
     protected ArrayList<Post> createdPosts;
 
+    /**
+     * @param username      - of user
+     * @param geoLocation   - location of user
+     */
     public PremiumUser(String username, double geoLocation) {
         super(username, geoLocation);
         this.accountType = AccountType.PREMIUM;
@@ -14,6 +22,9 @@ public class PremiumUser extends User {
         setCreatedPosts(new ArrayList<Post>());
     }
     
+    /**
+     * @param amount to pay needs to be >=30 
+     */
     public void payFee(int amount){
         if(amount >= subscriptionFee){
             setPaidFee(true);
@@ -22,10 +33,15 @@ public class PremiumUser extends User {
         }
     }
     
+    /**
+     * @param post to be created
+     */
     public void createPost(Post p){
         try{
             if ((accountType == AccountType.PREMIUM && isPaidFee()) || (accountType == AccountType.ADMIN) && (this.blocked() != true)){
-                getCreatedPosts().add(p);
+                if (p.isValid()){
+                    getCreatedPosts().add(p);
+                }
             } else if(!isPaidFee()){
                 throw new UserPermissionsException("User " + getUsername() + " needs to pay the subscript fee of £" + subscriptionFee);
             } else if(this.blocked()){
@@ -51,7 +67,6 @@ public class PremiumUser extends User {
                 throw new UserPermissionsException("User " + getUsername() + " needs to be an " + AccountType.ADMIN 
                         + " ato delete someone elses post, but is only a " + this.accountType + " user.");
             }
-            
         } catch (UserPermissionsException e){
             System.out.println(e);
         }
@@ -75,18 +90,30 @@ public class PremiumUser extends User {
         
     }
 
+    /**
+     * @return true if the user has paid the correct fee
+     */
     private boolean isPaidFee() {
         return paidFee;
     }
 
+    /**
+     * @param set paidfee boolean
+     */
     private void setPaidFee(boolean paidFee) {
         this.paidFee = paidFee;
     }
 
+    /**
+     * @return all posts created by this user
+     */
     public ArrayList<Post> getCreatedPosts() {
         return createdPosts;
     }
 
+    /**
+     * @param createdPosts set the created posts of this user
+     */
     public void setCreatedPosts(ArrayList<Post> createdPosts) {
         this.createdPosts = createdPosts;
     }

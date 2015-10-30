@@ -1,9 +1,17 @@
 import java.util.ArrayList;
 
+/**
+ * @author rbwilliams
+ *
+ */
 public class Administrator extends PremiumUser {
     
     ArrayList<User> blockedUsers = new ArrayList<User>();
 
+    /**
+     * @param username      - of user
+     * @param geoLocation   - location of user
+     */
     public Administrator(String username, double geoLocation) {
         super(username, geoLocation);
         this.accountType = AccountType.ADMIN;
@@ -35,11 +43,17 @@ public class Administrator extends PremiumUser {
         }
     }
     
+    /**
+     * @param user to be blocked
+     */
     public void blockUser(User user){
         super.blockUser(user, true);
         blockedUsers.add(user);
     }
     
+    /**
+     * @param user to be unblocked
+     */
     public void unblockUser(User user){
         super.blockUser(user, false);
         blockedUsers.remove(user);

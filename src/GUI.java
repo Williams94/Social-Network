@@ -1,18 +1,15 @@
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * @author rbwilliams
+ *
+ */
 public class GUI extends JFrame {
 
     public JButton printCurrentStateButton;
@@ -53,7 +50,7 @@ public class GUI extends JFrame {
         //JPanel panel = new JPanel();
         frame.setLayout(new GridLayout(7, 3, 3, 3));
         
-        dateLabel = new JLabel("Enter date: (e.g. 12/10/2015)");
+        dateLabel = new JLabel("Enter date: (e.g. 12/10/2015 - 21/10/2015)");
         userLabel = new JLabel("Enter a username:");
         postLabel = new JLabel("Select a user then a post to peform various operations: ");
         spacer = new JLabel(" ");
