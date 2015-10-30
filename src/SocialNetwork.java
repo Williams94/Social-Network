@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.JComboBox;
+
 public class SocialNetwork {
     
     private String name;
@@ -52,6 +54,8 @@ public class SocialNetwork {
             System.out.println("No posts on that day!");
         }
     }
+    
+ 
     
     public static ArrayList<Post> getAllPosts(){
         

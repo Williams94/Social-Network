@@ -24,7 +24,7 @@ public class Video extends Post {
     @Override
     public String toString(){
         return getSender().getUsername() + "'s " + getClass().toString().substring(6) + " post: " + getText() + 
-               "  Sent: " + getSent() + "  File path: " + getPath() + "  File type: " + getFileType();
+               "  Sent: " + getSent() + "  File path: " + getPath() + "  File type: " + path.toString().substring(path.toString().indexOf(".")+1);
     }
     
     @Override
