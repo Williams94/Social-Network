@@ -9,6 +9,7 @@ public class Administrator extends PremiumUser {
         this.accountType = AccountType.ADMIN;
     }
     
+    @Override
     protected void setFileType(String fileType){
         try {
         if (this.accountType != AccountType.ADMIN){            
